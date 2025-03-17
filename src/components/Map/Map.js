@@ -1,7 +1,9 @@
 import {
+  Autocomplete,
   GoogleMap,
   InfoWindow,
   Marker,
+  MarkerClusterer,
   useJsApiLoader,
 } from "@react-google-maps/api";
 import "./map.css";
@@ -12,7 +14,8 @@ import ChangeMapType from "../Layers/ChangeMapType";
 const Map = () => {
   const api_Key = process.env.API_KEY;
   const [selectedMarker, setSelectedMarker] = useState("");
-
+  const inputRef = useRef();
+  const [location, setLocation] = useState(null);
   const containerStyle = {
     width: "100%",
     height: "87vh",
@@ -125,7 +128,7 @@ const Map = () => {
         mapRef.current.setMapTypeId(MapType.terrain);
       } else if (changeMyTypeId === 3) {
         mapRef.current.setMapTypeId(MapType.satellite);
-      } else if ((changeMyTypeId === 4)) {
+      } else if (changeMyTypeId === 4) {
         mapRef.current.setMapTypeId(MapType.hybrid);
       }
     }
@@ -135,6 +138,7 @@ const Map = () => {
   const { isLoaded } = useJsApiLoader({
     id: api_Key,
     googleMapsApiKey: api_Key,
+
   });
   return isLoaded ? (
     <GoogleMap
@@ -185,7 +189,40 @@ const Map = () => {
         </InfoWindow>
       )}
 
-      <ChangeMapType handleMapToggle={handleMapToggle}/>
+      {/* <MarkerClusterer>
+        {(clusterer) => (
+          <>
+            <Marker
+              position={{ lat: 24.8253, lng: 67.1261 }}
+              clusterer={clusterer}
+            />
+            <Marker
+              position={{ lat: 24.8607, lng: 67.0011 }}
+              clusterer={clusterer}
+            />
+          </>
+        )}
+      </MarkerClusterer> */}
+
+      {/* <Autocomplete
+        onLoad={(autocomplete) => console.log(autocomplete)}
+        onPlaceChanged={() => {
+          const place = inputRef.current.getPlace();
+          setLocation(place);
+        }}
+      >
+        <input type="text" placeholder="Search for a place..." ref={inputRef} />
+      </Autocomplete> */}
+      {/* {location && (
+        <Marker
+          position={{
+            lat: location.geometry.location.lat(),
+            lng: location.geometry.location.lng(),
+          }}
+        />
+      )} */}
+
+      <ChangeMapType handleMapToggle={handleMapToggle} />
     </GoogleMap>
   ) : (
     <></>
