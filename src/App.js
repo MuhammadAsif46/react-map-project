@@ -5,10 +5,10 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 const App = () => {
   return (
     <div>
-      <h1>
+      <h3>
         Google React Map Javascript Api
-        <FaMapMarkerAlt />
-      </h1>
+        {/* <FaMapMarkerAlt /> */}
+      </h3>
       <Map />
     </div>
   );

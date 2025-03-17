@@ -4,20 +4,16 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
+import "./map.css";
 import React, { useState } from "react";
 import mapIcon from "../../assets/map-icon.png";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { LuMapPinPlusInside, LuMapPinCheckInside } from "react-icons/lu";
-import { RiMapPin5Fill } from "react-icons/ri";
-import { SiGooglemaps } from "react-icons/si";
 const Map = () => {
-  //   const api_Key = "AIzaSyCcDba7w8OQqgWBCmje7-0qDWJHESQDJmA";
   const api_Key = process.env.API_KEY;
   const [selectedMarker, setSelectedMarker] = useState("");
 
   const containerStyle = {
     width: "100%",
-    height: "85vh",
+    height: "87vh",
   };
 
   const center = {
@@ -91,26 +87,45 @@ const Map = () => {
       zoom={10}
       //   onLoad={onLoad}
       //   onUnmount={onUnmount}
+      options={
+        {
+        //   mapTypeControl: false,
+        //   mapTypeId: "satellite",
+        //   mapTypeId: "terrain",
+        //   mapTypeId: "hybrid",
+        //   fullscreenControl: false,
+        //   streetViewControl: false,
+        //   zoomControl: false,
+        //   disableDefaultUI: true,
+        //   draggable: false,
+        //   navigationControl: false
+        }
+      }
     >
       {makers.map((item) => (
         <Marker
           key={item.name}
           position={item.location}
-        //   options={{
-        //     icon: item.status === "icon1" ? mapIcon : "",
-        //   }}
+          //   options={{
+          //     icon: item.status === "icon1" ? mapIcon : "",
+          //   }}
           onClick={() => setSelectedMarker(item)}
         />
       ))}
       {/* <Marker position={anotherMarker} /> */}
 
       {selectedMarker && (
-        <InfoWindow position={selectedMarker.location}>
-          <>
+        <InfoWindow
+          position={selectedMarker.location}
+          options={{
+            pixelOffset: new window.google.maps.Size(0, -40),
+          }}
+        >
+          <div>
             <h2>Location - {selectedMarker.name}</h2>
             <h2>status - {selectedMarker.status}</h2>
             <button onClick={() => setSelectedMarker("")}>Close</button>
-          </>
+          </div>
         </InfoWindow>
       )}
     </GoogleMap>
