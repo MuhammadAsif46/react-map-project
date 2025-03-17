@@ -125,7 +125,7 @@ const Map = () => {
         mapRef.current.setMapTypeId(MapType.terrain);
       } else if (changeMyTypeId === 3) {
         mapRef.current.setMapTypeId(MapType.satellite);
-      } else if ((changeMyTypeId = 4)) {
+      } else if ((changeMyTypeId === 4)) {
         mapRef.current.setMapTypeId(MapType.hybrid);
       }
     }
