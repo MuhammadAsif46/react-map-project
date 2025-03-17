@@ -7,6 +7,7 @@ import {
 import "./map.css";
 import React, { useState } from "react";
 import mapIcon from "../../assets/map-icon.png";
+import { MAP_THEME, mapOptions } from "../../utilis/mapConfig";
 const Map = () => {
   const api_Key = process.env.API_KEY;
   const [selectedMarker, setSelectedMarker] = useState("");
@@ -20,6 +21,18 @@ const Map = () => {
     lat: 24.8607,
     lng: 67.0011,
   };
+
+  const waterStyles = [
+    {
+      featureType: "water",
+      elementType: "geometry.fill",
+      stylers: [
+        {
+          color: "#17bd2a",
+        },
+      ],
+    },
+  ];
   //   const anotherMarker = {
   //     lat: 24.8773,
   //     lng: 67.1591,
@@ -87,8 +100,7 @@ const Map = () => {
       zoom={10}
       //   onLoad={onLoad}
       //   onUnmount={onUnmount}
-      options={
-        {
+      options={{
         //   mapTypeControl: false,
         //   mapTypeId: "satellite",
         //   mapTypeId: "terrain",
@@ -99,8 +111,9 @@ const Map = () => {
         //   disableDefaultUI: true,
         //   draggable: false,
         //   navigationControl: false
-        }
-      }
+        // styles: waterStyles,
+        styles: mapOptions.mapTheme
+      }}
     >
       {makers.map((item) => (
         <Marker
