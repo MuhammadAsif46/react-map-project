@@ -5,9 +5,10 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import "./map.css";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import mapIcon from "../../assets/map-icon.png";
 import { MAP_THEME, mapOptions } from "../../utilis/mapConfig";
+import ChangeMapType from "../Layers/ChangeMapType";
 const Map = () => {
   const api_Key = process.env.API_KEY;
   const [selectedMarker, setSelectedMarker] = useState("");
@@ -89,6 +90,48 @@ const Map = () => {
     },
   ];
 
+  const [changeMyTypeId, setChangeMyTypeId] = useState(1);
+  const mapRef = useRef(null);
+
+  const onMapLoad = (mapInstance) => {
+    mapRef.current = mapInstance;
+  };
+  // console.log("mapRefCurrent", mapRef.current);
+  const MapType = {
+    roadmap: "roadmap",
+    satellite: "satellite",
+    hybrid: "hybrid",
+    terrain: "terrain",
+  };
+  const handleMapToggle = () => {
+    if (changeMyTypeId === 0) {
+      setChangeMyTypeId(1);
+    } else if (changeMyTypeId === 1) {
+      setChangeMyTypeId(2);
+    } else if (changeMyTypeId === 2) {
+      setChangeMyTypeId(3);
+    } else if (changeMyTypeId === 3) {
+      setChangeMyTypeId(4);
+    } else if (changeMyTypeId === 4) {
+      setChangeMyTypeId(1);
+    }
+  };
+
+  useEffect(() => {
+    if (mapRef.current) {
+      if (changeMyTypeId === 1) {
+        mapRef.current.setMapTypeId(MapType.roadmap);
+      } else if (changeMyTypeId === 2) {
+        mapRef.current.setMapTypeId(MapType.terrain);
+      } else if (changeMyTypeId === 3) {
+        mapRef.current.setMapTypeId(MapType.satellite);
+      } else if ((changeMyTypeId = 4)) {
+        mapRef.current.setMapTypeId(MapType.hybrid);
+      }
+    }
+  }, [changeMyTypeId]);
+  // console.log(changeMyTypeID)
+
   const { isLoaded } = useJsApiLoader({
     id: api_Key,
     googleMapsApiKey: api_Key,
@@ -98,7 +141,7 @@ const Map = () => {
       mapContainerStyle={containerStyle}
       center={center}
       zoom={10}
-      //   onLoad={onLoad}
+      onLoad={onMapLoad}
       //   onUnmount={onUnmount}
       options={{
         //   mapTypeControl: false,
@@ -112,7 +155,7 @@ const Map = () => {
         //   draggable: false,
         //   navigationControl: false
         // styles: waterStyles,
-        styles: mapOptions.mapTheme
+        styles: mapOptions.mapTheme,
       }}
     >
       {makers.map((item) => (
@@ -141,6 +184,8 @@ const Map = () => {
           </div>
         </InfoWindow>
       )}
+
+      <ChangeMapType handleMapToggle={handleMapToggle}/>
     </GoogleMap>
   ) : (
     <></>
